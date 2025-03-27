@@ -1,0 +1,36 @@
+.node {
+  width: 200px;
+  height: 50px;
+  background-color: #fff;
+  border: 1px solid #4a90e2;
+  border-radius: 5px;
+  padding: 5px;
+
+  text-align: center;
+}
+
+.node.selected {
+  border: 2px solid #4a90e2;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.node-title {
+  font-weight: bold;
+  font-size: 16px;
+  color: #4a90e2;
+}
+
+.node-summary {
+  font-size: 12px;
+}
+
+/* 无效连接线 */
+.react-flow__edge.validation-error path {
+  stroke: #ff4444 !important;
+  stroke-dasharray: 5 5;
+}
+
+/* 维度错误节点 */
+.react-flow__node.dimension-error {
+  box-shadow: 0 0 0 2px #ff4444;
+}

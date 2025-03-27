@@ -1,0 +1,49 @@
+/* 工具栏容器 */
+.toolbar-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+  display: flex;
+  z-index: 1000;
+}
+
+/* 按钮组样式 */
+.toolbar-buttons {
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  border-right: 1px solid #ddd;
+}
+
+/* 按钮基础样式 */
+.toolbar-btn {
+  padding: 8px 16px;
+  margin: 0 5px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+/* 激活状态 */
+.toolbar-btn.active {
+  background: #4a90e2;
+  color: white;
+}
+
+/* 悬停效果 */
+.toolbar-btn:hover:not(.active) {
+  background: #e9ecef;
+}
+
+/* 面板容器 */
+.toolbar-panel {
+  flex: 1;
+  padding: 10px 20px;
+  overflow-y: auto;
+}

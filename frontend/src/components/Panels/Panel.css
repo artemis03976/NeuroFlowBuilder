@@ -1,0 +1,65 @@
+.panel-container-wrapper {
+  position: relative;
+  order: 2;
+  top: 50px;
+
+  height: 100%;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 8px;
+  z-index: 10;
+
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(5px);
+  overflow: hidden;
+
+  transition: width 0.2s ease-out;
+
+  will-change: width;
+  contain: strict;
+}
+
+/* 当处于拖拽状态时禁用过渡 */
+.panel-container-wrapper.resizing {
+  transition: none !important;
+}
+
+.panel-container-wrapper.collapsed {
+  transition: width 0.2s ease-in-out; /* 保持独立的折叠动画 */
+}
+
+.panel-container {
+  width: 100%; /* 确保内容宽度与容器同步 */
+  height: 100%;
+  overflow: auto;
+  padding: 16px;
+  box-sizing: border-box; /* 包含padding在宽度计算中 */
+}
+
+/* 拖拽手柄 */
+.panel-drag-handle {
+  position: absolute;
+  left: -8px;
+  top: 0;
+  width: 16px;
+  height: 100%;
+  cursor: col-resize;
+  z-index: 10;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.drag-bar {
+  width: 10px;
+  height: 24px;
+  background: #ddd;
+  border-radius: 2px;
+  transition: all 0.2s;
+}
+
+/* 拖拽时禁用文本选择 */
+.panel-container-wrapper.dragging {
+  user-select: none;
+  -webkit-user-select: none;
+}

@@ -1,0 +1,28 @@
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+
+class GeneratedModel(nn.Module):
+    def __init__(self):
+        super().__init__()
+
+        # Layer definitions
+        {% for layer in layers.values() %}
+        {% if layer.class_name.startswith('nn.') %}
+        self.{{ layer.module_name }} = {{ layer.class_name }}(
+            {%- for param_name, param_value in layer.parameters.items() -%}
+            {{ param_name }}={{ param_value.__repr__() }}{{ "," if not loop.last }}
+            {%- endfor -%}
+        )
+        {% endif %}
+        {% endfor %}
+
+    def forward(self, x):
+        # Input Process
+        {% for node_id in execution_order -%}
+        {% set layer = layers[node_id] -%}
+        {% set input_var = "x" -%}  {# 默认输入变量 #}
+        {{ layer.forward_template|replace('{{ module_name }}', layer.module_name)|replace('{{ input_var }}', input_var) }}
+        {% endfor %}
+        return x

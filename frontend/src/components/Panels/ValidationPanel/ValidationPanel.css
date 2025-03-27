@@ -1,0 +1,37 @@
+.error-category {
+  margin: 1rem 0;
+  padding: 1rem;
+  background: rgba(255, 245, 245, 0.9);
+  border-radius: 8px;
+  
+  &.level-3 {
+    border-left: 4px solid #ff4444;
+    background: rgba(255, 68, 68, 0.1);
+  }
+}
+
+.error-item {
+  margin: 0.5rem 0;
+  padding: 0.8rem;
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.error-timestamp {
+  font-size: 0.8em;
+  color: #666;
+  margin-bottom: 0.3rem;
+}
+
+.critical-error {
+  color: #ff4444;
+  font-weight: 500;
+}
+
+.error-context {
+  font-family: monospace;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  background: #f8f8f8;
+}
