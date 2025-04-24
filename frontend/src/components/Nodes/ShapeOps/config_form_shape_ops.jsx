@@ -1,92 +1,66 @@
-import { Form, InputNumber, Select, Input} from 'antd';
-import { useFlowStore } from '@/stores/useFlowStore';
+import { Form, InputNumber, Select } from 'antd';
+import InputNumberArray from '@/components/common/InputNumberArray';
+import withConfigForm from '@/components/Nodes/withConfigForm';
 const { Option } = Select;
 
+const title = 'Shape Operations';
+const description = '形状操作允许你改变张量的维度，包括重塑、视图变换、压缩和扩展维度等操作。';
 
-const ShapeOpsConfigForm = ({ config }) => {
-  const updateNodeConfig = useFlowStore(state => state.updateNodeConfig);
-  const [form] = Form.useForm();
+const ShapeOpsFormContent = ({ form, config }) => {
   const operation = Form.useWatch('operation', form);
 
-  const handleChange = (newValues) => {
-    // Transfer targetShape to number[]
-    if (newValues.targetShapeStr) {
-      newValues.targetShape = newValues.targetShapeStr
-        .split(',')
-        .map(Number)
-        .filter(n => !isNaN(n));
-      delete newValues.targetShapeStr;
-    }
-
-    updateNodeConfig({
-      ...config,
-      ...newValues
-    });
-  };
-
   return (
-    <div className="config-form">
-      <h3> Shape Operations </h3>
-      <p> put description here </p>
-
-      <Form
-        form={form}
-        layout="vertical"
-        initialValues={{
-          ...config,
-          targetShapeStr: config.targetShape?.join(',') // Transfer number[] to string when initialize
-        }}
-        onValuesChange={handleChange}
-        autoComplete="off"
+    <>
+      <Form.Item
+        label="Operation Type"
+        name="operation"
+        rules={[{ required: true }]}
       >
+        <Select>
+          <Option value="reshape">Reshape</Option>
+          <Option value="view">View</Option>
+          <Option value="squeeze">Squeeze</Option>
+          <Option value="unsqueeze">Unsqueeze</Option>
+        </Select>
+      </Form.Item>
+
+      {/* Different input params for various shape operations */}
+      {['reshape', 'view'].includes(operation) && (
         <Form.Item
-          label="Operation Type"
-          name="operation"
+          label="Target Shape"
+          name="targetShape"
+          rules={[
+            { required: true, message: '请输入目标形状'}
+          ]}
+        >
+          <InputNumberArray 
+            placeholder="Seperate dim by ','(2, -1, 64)" 
+            style={{ width: '100%' }}
+          />
+        </Form.Item>
+      )}
+
+      {['squeeze', 'unsqueeze'].includes(operation) && (
+        <Form.Item
+          label="Dimension"
+          name="dim"
           rules={[{ required: true }]}
         >
-          <Select>
-            <Option value="reshape">Reshape</Option>
-            <Option value="view">View</Option>
-            <Option value="squeeze">Squeeze</Option>
-            <Option value="unsqueeze">Unsqueeze</Option>
-          </Select>
+          <InputNumber 
+            min={-1}
+            placeholder="输入维度索引(-1表示最后维度)"
+            style={{ width: '100%' }} 
+          />
         </Form.Item>
-
-        {/* Shape operation params */}
-        {['reshape', 'view'].includes(operation) && (
-          <Form.Item
-            label="Target Shape"
-            name="targetShapeStr"
-            rules={[
-              { 
-                validator: (_, value) => {
-                  const nums = value.split(',').map(Number);
-                  const valid = nums.every(n => !isNaN(n));
-                  return valid ? Promise.resolve() : Promise.reject('Please enter valid number');
-                }
-              }
-            ]}
-          >
-            <Input placeholder="Seperate dim by ','（2,-1,64）" />
-          </Form.Item>
-        )}
-
-        {['squeeze', 'unsqueeze'].includes(operation) && (
-          <Form.Item
-            label="Dimension"
-            name="dim"
-            rules={[{ required: true }]}
-          >
-            <InputNumber 
-              min={-1}
-              placeholder="输入维度索引（-1表示最后维度）" 
-            />
-          </Form.Item>
-        )}
-        
-      </Form>
-    </div>
+      )}
+    </>
   );
 };
+
+const ShapeOpsConfigForm = withConfigForm(
+  title,
+  description,
+  ShapeOpsFormContent,
+);
 
 export default ShapeOpsConfigForm;

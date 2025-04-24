@@ -1,5 +1,5 @@
 import { NodeItem } from './NodeItem';
-import { NODE_TYPES } from '@/configs/node';
+import { NODE_TYPE } from '@/configs/node';
 
 import './NodePanel.css';
 
@@ -10,7 +10,7 @@ const NodePanel = () => {
       <h3>Node Library</h3>
       <div className="description">You can drag these nodes to the pane on the right.</div>
       <div className="node-list">
-        {Object.values(NODE_TYPES).map((nodeType) => (
+        {Object.values(NODE_TYPE).map((nodeType) => (
           <NodeItem key={nodeType} type={nodeType} />
         ))}
       </div>

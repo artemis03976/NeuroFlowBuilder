@@ -1,96 +1,76 @@
-import { NODE_META } from '@/configs/node';
-import { DimensionCalculator } from './DimensionCalculator';
+import { NODE_META } from '@node-configs';
+import type { DimensionContext, ValidationResult } from '@node-configs';
+import type { FlowNode } from '@/stores/useFlowStore'
+import { useErrorStore } from '@/stores/useErrorStore';
+import { ERROR_TYPE } from '@error-configs';
 
 export class ConnectionValidator {
-  private validationErrors = new Map<string, ValidationResult>();
+  private validationResults = new Map<string, ValidationResult>();
   
-  constructor(private calculator: DimensionCalculator) {}
-  
+  private errorStore = useErrorStore.getState();
+
   // 验证节点输入
-  validateNodeInput(node: FlowNode): ValidationResult {
+  validateNode(node: FlowNode, context: DimensionContext<any>): ValidationResult {
     const config = NODE_META[node.type as keyof typeof NODE_META];
     if (!config?.dimensionRules) {
       return { isValid: true };
     }
     
-    // 获取预期输入维度
-    const context = this.createValidationContext(node);
-    const expectedInput = config.dimensionRules.input(context);
+    // 使用节点的验证规则
+    const result = config.dimensionRules.validate(context);
     
-    // 获取实际输入维度
-    const actualInputs = this.calculator.getActualInputDimensions(node.id);
-    if (actualInputs.length === 0) {
-      // 如果是没有输入的节点（例如输入层），视为有效
-      return { isValid: true };
-    }
-    
-    // 对于单输入节点
-    if (actualInputs.length === 1) {
-      const actualInput = actualInputs[0];
-      
-      // 如果节点定义了自定义验证规则，使用它
-      if (config.dimensionRules.validateInput) {
-        const result = config.dimensionRules.validateInput(
-          actualInput, expectedInput, context
-        );
-        
-        if (!result.isValid) {
-          this.validationErrors.set(node.id, result);
+    // 存储验证结果
+    this.validationResults.set(node.id, result);
+
+    if (!result.isValid) {
+      this.errorStore.addError(ERROR_TYPE.DIMENSION, node.id, {
+        message: result.message || '验证失败',
+        context: {
+          nodeType: node.type,
+          fixSuggestion: result.fixSuggestion
         }
-        
-        return result;
-      }
-      
-      // 默认验证规则
-      return this.defaultValidation(actualInput, expectedInput, node.id);
+      });
+    } else {
+      // 如果验证成功，移除可能存在的错误
+      this.errorStore.removeError(ERROR_TYPE.DIMENSION, node.id);
     }
     
-    // 多输入节点的验证逻辑...
-    
-    return { isValid: true };
+    return result;
   }
   
-  // 创建验证上下文
-  private createValidationContext(node: FlowNode) {
-    // 实现验证上下文创建逻辑
+  // 获取验证结果
+  getValidationResult(nodeId: string): ValidationResult | undefined {
+    return this.validationResults.get(nodeId);
   }
   
-  // 默认验证规则
-  private defaultValidation(actual: number[], expected: number[], nodeId: string): ValidationResult {
-    const dynamicMark = -1; // 默认动态标记
+  // 获取所有验证结果
+  getAllValidationResults(): Map<string, ValidationResult> {
+    return this.validationResults;
+  }
+  
+  // 获取所有错误（筛选出失败的验证结果）
+  getErrors(): Map<string, ValidationResult> {
+    const errors = new Map<string, ValidationResult>();
     
-    // 检查维度长度是否匹配
-    if (actual.length !== expected.length) {
-      return {
-        isValid: false,
-        message: `维度长度不匹配: 预期 ${expected.length}, 实际 ${actual.length}`,
-        expectedShape: expected,
-        actualShape: actual
-      };
-    }
-    
-    // 检查每个维度是否匹配（考虑动态标记）
-    for (let i = 0; i < expected.length; i++) {
-      if (expected[i] !== dynamicMark && actual[i] !== dynamicMark && expected[i] !== actual[i]) {
-        return {
-          isValid: false,
-          message: `维度不匹配: 预期 ${expected.join('×')}, 实际 ${actual.join('×')}`,
-          expectedShape: expected,
-          actualShape: actual
-        };
+    for (const [nodeId, result] of this.validationResults.entries()) {
+      if (!result.isValid) {
+        errors.set(nodeId, result);
       }
     }
     
-    return { isValid: true };
+    return errors;
   }
   
-  // 获取所有验证错误
-  getAllErrors(): Map<string, ValidationResult> {
-    return this.validationErrors;
+  // 检查是否有错误
+  hasErrors(): boolean {
+    return Array.from(this.validationResults.values())
+      .some(result => !result.isValid);
   }
   
-  // 清除所有错误
-  clearErrors() {
-    this.validationErrors.clear();
+  // 清除所有验证结果
+  clearErrors(): this {
+    this.validationResults.clear();
+    this.errorStore.clearType(ERROR_TYPE.DIMENSION);
+    return this;
   }
 }

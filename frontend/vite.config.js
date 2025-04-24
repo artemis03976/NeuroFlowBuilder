@@ -8,7 +8,8 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
-      '@node-configs': path.resolve(__dirname, './src/configs/node')
+      '@node-configs': path.resolve(__dirname, './src/configs/node'),
+      '@error-configs': path.resolve(__dirname, './src/configs/error')
     }
   },
   optimizeDeps: {

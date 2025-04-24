@@ -1,5 +1,5 @@
-import { NODE_TYPES } from '@node-configs/types';
-import type { BaseNodeConfig, DimensionRules, ParameterCalculator } from '@node-configs/types';
+import { NODE_TYPE } from '@node-configs';
+import type { BaseNodeConfig, DimensionRules, ParameterCalculator } from '@node-configs';
 
 // Parameter Definition
 type ReluParams = {
@@ -35,14 +35,16 @@ const ReluParameterCalculator: ParameterCalculator<ReluParams> = (p) => ({
 });
 
 // Meta Config
-export const RELU_META: BaseNodeConfig<typeof NODE_TYPES.RELU, ReluParams> = {
-  type: NODE_TYPES.RELU,
+export const RELU_META: BaseNodeConfig<typeof NODE_TYPE.RELU, ReluParams> = {
+  type: NODE_TYPE.RELU,
   label: 'nn.ReLU',
   parameters: {
     inplace: false
   },
   dimensionRules: ReluDimensionRules,
   parameterCalculator: ReluParameterCalculator,
+  componentName: 'ReluNode',
+  configFormPath: 'Relu/config_form_relu',
 };
 
 export default RELU_META;

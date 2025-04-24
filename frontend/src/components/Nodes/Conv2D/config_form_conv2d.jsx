@@ -1,66 +1,54 @@
-import { Form, InputNumber, Switch, Input } from 'antd';
-import { useFlowStore } from '@/stores/useFlowStore';
+import { Form, InputNumber, Switch } from 'antd';
+import InputNumberArray from '@/components/common/InputNumberArray';
+import withConfigForm from '@/components/Nodes/withConfigForm';
 
+const title = 'nn.Conv2D';
+const description = '二维卷积层，用于处理图像等二维数据。';
 
-const Conv2DConfigForm = ({ config }) => {
-  const updateNodeConfig = useFlowStore(state => state.updateNodeConfig);
-  const [form] = Form.useForm();
-
-  const handleChange = (newValues) => {
-    updateNodeConfig({
-      ...config,
-      ...newValues
-    });
-  };
-
+const Conv2DFormContent = ({ form, config }) => {
   return (
-    <div className="config-form">
-      <h3> nn.Conv2D </h3>
-      <p> put description here </p>
-
-      <Form
-        form={form}
-        layout="vertical"
-        initialValues={config}
-        onValuesChange={handleChange}
-        autoComplete="off"
+    <>
+      <Form.Item
+        label="Input Channels"
+        name="in_channels"
       >
-        <Form.Item
-          label="Input Channels"
-          name="in_channels"
-        >
-          <InputNumber
-            id="input_channels"
-            style={{ width: '100%' }}
-          />
-        </Form.Item>
+        <InputNumber
+          id="input_channels"
+          style={{ width: '100%' }}
+        />
+      </Form.Item>
 
-        <Form.Item
-          label="Output Channels"
-          name="out_channels"
-        >
-          <InputNumber
-            id="output_channels"
-            style={{ width: '100%' }}
-          />
-        </Form.Item>
+      <Form.Item
+        label="Output Channels"
+        name="out_channels"
+      >
+        <InputNumber
+          id="output_channels"
+          style={{ width: '100%' }}
+        />
+      </Form.Item>
 
-        <Form.Item
-          label="Kernel Size"
-          name="kernel_size"
-        >
-          <Input
-            id="kernel_size"
-            style={{ width: '100%' }}
-          />
-        </Form.Item>
+      <Form.Item
+        label="Kernel Size"
+        name="kernel_size"
+      >
+        <InputNumberArray
+          id="kernel_size"
+          style={{ width: '100%' }}
+        />
+      </Form.Item>
 
-        <Form.Item label="Bias" name="bias">
-          <Switch />
-        </Form.Item>
-      </Form>
-    </div>
+      <Form.Item label="Bias" name="bias">
+        <Switch />
+      </Form.Item>
+    </>
   );
 };
+
+const Conv2DConfigForm = withConfigForm(
+  title, 
+  description, 
+  Conv2DFormContent
+);
 
 export default Conv2DConfigForm;

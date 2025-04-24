@@ -10,7 +10,8 @@
     "forceConsistentCasingInFileNames": true,
     "paths": {
       "@/*": ["./src/*"],
-      "@node-configs/*": ["./src/configs/node/*"]
+      "@node-configs": ["./src/configs/node"],
+      "@error-configs": ["./src/configs/error"],
     },
     "types": [
       "vite/client"

@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useReactFlow } from "@xyflow/react";
 import { useFlowStore } from "@/stores/useFlowStore";
-import { NODE_META } from '@/configs/node';
+import { NODE_META } from '@node-configs';
 
 export const useNodeDnD = () => {
   const { screenToFlowPosition } = useReactFlow();

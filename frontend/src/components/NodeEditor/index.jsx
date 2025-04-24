@@ -1,11 +1,11 @@
 import React, { useCallback } from "react";
 import { Background, Controls, MiniMap, ReactFlow } from "@xyflow/react";
 
-import { NODE_TYPES } from "@/configs/node"
+import { NODE_META } from "@/configs/node"
 import { useFlowStore } from "@/stores/useFlowStore";
 import { useNodeDnD } from "@/hooks/useNodeDnD";
 import { useEditorInteractions } from "@/hooks/useEditorInteractions";
-import { useDimensionValidation } from "@/hooks/useDimensionValidation";
+import { useDimensionCalculation } from "@/hooks/useDimensionCalculation";
 
 import { InfoPanel } from "@/components/InfoPanel";
 import * as NodeComponents from "../Nodes";
@@ -13,14 +13,11 @@ import * as NodeComponents from "../Nodes";
 import './NodeEditor.css';
 
 // Node Types map
-const nodeTypes = Object.entries(NodeComponents).reduce((acc, [componentName, component]) => {
+const nodeTypes = Object.entries(NODE_META).reduce((acc, [type, meta]) => {
   // Transform component names to type enums
-  const typeName = componentName
-    .replace('Node', '')  // Remove suffix
-    .replace(/([a-z])([A-Z])/g, '$1_$2')
-    .toUpperCase();
-  
-  acc[NODE_TYPES[typeName]] = component;
+  if (meta.componentName && NodeComponents[meta.componentName]) {
+    acc[type] = NodeComponents[meta.componentName];
+  }
   return acc;
 }, {});
 
@@ -38,7 +35,7 @@ export const NodeEditor = () => {
   // Custom hooks
   const { onDrop, onDragOver } = useNodeDnD();
   const { handlePaneClick, handleElementClick } = useEditorInteractions();
-  // useDimensionValidation();
+  useDimensionCalculation();
 
   const onConnect = useCallback((connection) => {
     addEdge(connection)

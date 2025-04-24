@@ -1,5 +1,5 @@
-import { NODE_TYPES } from '@node-configs/types';
-import type { BaseNodeConfig, DimensionRules, ParameterCalculator } from '@node-configs/types';
+import { NODE_TYPE } from '@node-configs';
+import type { BaseNodeConfig, DimensionRules, ParameterCalculator } from '@node-configs';
 
 // Parameter Definition
 type ShapeOpsParams = {
@@ -147,8 +147,8 @@ const ShapeOpsParameterCalculator: ParameterCalculator<ShapeOpsParams> = (p) => 
 });
 
 // Meta Config
-const SHAPE_OPS_META: BaseNodeConfig<typeof NODE_TYPES.SHAPE_OPS, ShapeOpsParams> = {
-  type: NODE_TYPES.SHAPE_OPS,
+const SHAPE_OPS_META: BaseNodeConfig<typeof NODE_TYPE.SHAPE_OPS, ShapeOpsParams> = {
+  type: NODE_TYPE.SHAPE_OPS,
   label: (params) => `ShapeOp(${params.operation})`,
   parameters: {
     operation: 'reshape',
@@ -157,6 +157,8 @@ const SHAPE_OPS_META: BaseNodeConfig<typeof NODE_TYPES.SHAPE_OPS, ShapeOpsParams
   },
   dimensionRules: ShapeOpsDimensionRules,
   parameterCalculator: ShapeOpsParameterCalculator,
+  componentName: 'ShapeOpsNode',
+  configFormPath: 'ShapeOps/config_form_shape_ops',
 };
 
 export default SHAPE_OPS_META;

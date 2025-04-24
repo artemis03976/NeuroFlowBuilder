@@ -1,24 +1,16 @@
-import { Form, Switch} from 'antd';
-import { useFlowStore } from '@/stores/useFlowStore';
+import withConfigForm from '@/components/Nodes/withConfigForm';
 
+const title = 'nn.ReLU';
+const description = 'ReLU激活函数将所有负值置为0，保持正值不变。';
 
-const ReluConfigForm = ({ config }) => {
-  const updateNodeConfig = useFlowStore(state => state.updateNodeConfig);
-  const [form] = Form.useForm();
-
-  const handleChange = (newValues) => {
-    updateNodeConfig({
-      ...config,
-      ...newValues
-    });
-  };
-
-  return (
-    <div className="config-form">
-      <h3> nn.ReLU </h3>
-      <p> put description here </p>
-    </div>
-  );
+const ReluFormContent = ({ form, config }) => {
+  return null;
 };
+
+const ReluConfigForm = withConfigForm(
+  title, 
+  description, 
+  ReluFormContent
+);
 
 export default ReluConfigForm;

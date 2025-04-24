@@ -1,6 +1,7 @@
-import { NODE_META } from '@/configs/node';
-import type { DimensionContext } from '@/configs/node/types';
+import { NODE_META } from '@node-configs';
+import type { DimensionContext } from '@node-configs';
 import type { FlowNode, FlowEdge } from '@/stores/useFlowStore';
+import { ConnectionValidator } from './ConnectionValidator';
 
 export class DimensionCalculator {
   // Store the dimension change pairs for each node
@@ -12,7 +13,7 @@ export class DimensionCalculator {
   private predecessorMap = new Map<string, string[]>();
 
   // Calculate the changes of dimension during forward propagation
-  calculate(nodes: FlowNode[], edges: FlowEdge[], stopOnError = false) {
+  calculate(nodes: FlowNode[], edges: FlowEdge[], validator?: ConnectionValidator, stopOnError = false) {
     this.nodeDimensions.clear();
 
     this.buildMap(edges);
@@ -20,17 +21,26 @@ export class DimensionCalculator {
     // Do topological sort to ensure propagation path
     const sortedNodes = this.topologicalSort(nodes, edges);
 
-    // for (const node of sortedNodes) {
-    //   const validationResult = this.validateNode(node);
-    //   this.validationResults.set(node.id, validationResult);
-      
-    //   if (!validationResult.isValid && stopOnError) {
-    //     return this; // 出错时可选择停止计算
-    //   }
-    // }
+    // Clear results
+    if (validator) {
+      validator.clearErrors();
+    }
 
-    // Caculate dimension changes based on the sorted order
-    sortedNodes.forEach(node => this.computeNodeDim(node));
+    // Do propagation check
+    for (const node of sortedNodes) {
+      const context = this.createContext(node);
+
+      if (validator) {
+        const validationResult = validator.validateNode(node, context);
+        // Stop propagation computing when premitted and has error
+        if (!validationResult.isValid && stopOnError) {
+          return this; 
+        }
+      }
+      
+      // Caculate dimension changes based on the sorted order
+      this.computeNodeDim(node, context)
+    }
     
     return this;
   }
@@ -92,13 +102,11 @@ export class DimensionCalculator {
   }
 
   // Compute the input dim and output dim of nodes
-  computeNodeDim(node: FlowNode) {
+  computeNodeDim(node: FlowNode, context: DimensionContext<any>) {
     const nodeConfig = NODE_META[node.type as keyof typeof NODE_META];
     const rules = nodeConfig?.dimensionRules;
     if (!rules) return;
 
-    const context = this.createContext(node);
-    
     this.nodeDimensions.set(node.id, {
       in: context.inputs,
       out: rules.compute(context)

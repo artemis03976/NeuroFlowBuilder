@@ -1,25 +1,12 @@
-import { Handle, Position } from '@xyflow/react';
+import withNode from '../withNode';
 
-import "../nodes.css"
-
-export const ShapeOpsNode = ({ data, selected }) => {
-  const label = typeof data.label === 'function' 
-    ? data.label(data) 
-    : data.label;
-
-  return (
-    <div className={`node ${selected ? 'selected' : ''}`}>
-      <div className="node-title">{label}</div>
-      <div className="node-summary">
-        {data.operation === 'reshape' || data.operation === 'view' ? (
-          `Shape: [${data.targetShape?.join(', ') || ''}]`
-        ) : (
-          `Dim: ${data.dim ?? ''}`
-        )}
-      </div>
-
-      <Handle type="target" position={Position.Top} />
-      <Handle type="source" position={Position.Bottom} id="a" />
-    </div>
-  );
-};
+// 使用高阶组件创建ShapeOps节点
+export const ShapeOpsNode = withNode({
+  n_inputs: 1,
+  n_outputs: 1,
+  getLabel: (data) => {
+    return typeof data.label === 'function' 
+      ? data.label(data) 
+      : data.label;
+  }
+});

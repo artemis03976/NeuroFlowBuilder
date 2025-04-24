@@ -1,5 +1,5 @@
-import { NODE_TYPES } from '@node-configs/types';
-import type { BaseNodeConfig, DimensionRules, ParameterCalculator } from '@node-configs/types';
+import { NODE_TYPE } from '@node-configs';
+import type { BaseNodeConfig, DimensionRules, ParameterCalculator } from '@node-configs';
 
 // Parameter Definition
 type Conv2dParams = {
@@ -84,8 +84,8 @@ const Conv2dParameterCalculator: ParameterCalculator<Conv2dParams> = (p) => ({
 });
 
 // Meta Config
-const CONV2D_META: BaseNodeConfig<typeof NODE_TYPES.CONV2D, Conv2dParams> = {
-  type: NODE_TYPES.CONV2D,
+const CONV2D_META: BaseNodeConfig<typeof NODE_TYPE.CONV2D, Conv2dParams> = {
+  type: NODE_TYPE.CONV2D,
   label: 'nn.Conv2D',
   parameters: {
     in_channels: 3,
@@ -97,6 +97,8 @@ const CONV2D_META: BaseNodeConfig<typeof NODE_TYPES.CONV2D, Conv2dParams> = {
   },
   dimensionRules: Conv2dDimensionRules,
   parameterCalculator: Conv2dParameterCalculator,
+  componentName: 'Conv2DNode',
+  configFormPath: 'Conv2D/config_form_conv2d',
 };
 
 export default CONV2D_META;

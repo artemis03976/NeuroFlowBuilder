@@ -1,4 +1,4 @@
-import { NODE_META } from '@/configs/node'
+import { NODE_META } from '@node-configs'
 
 
 export class ParameterCalculator {

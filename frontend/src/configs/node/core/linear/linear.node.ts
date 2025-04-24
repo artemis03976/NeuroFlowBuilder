@@ -1,5 +1,5 @@
-import { NODE_TYPES } from '@node-configs/types';
-import type { BaseNodeConfig, DimensionRules, ParameterCalculator } from '@node-configs/types';
+import { NODE_TYPE } from '@node-configs';
+import type { BaseNodeConfig, DimensionRules, ParameterCalculator } from '@node-configs';
 
 // Parameter Definition
 type LinearParams = {
@@ -22,7 +22,7 @@ const LinearDimensionRules: DimensionRules<LinearParams> = {
 
     // Check validation
     const inputFeatures = input[input.length - 1];
-    if (inputFeatures!== params.in_features) {
+    if (inputFeatures !== params.in_features) {
       return {
         isValid: false,
         message: `Actual input dim ${inputFeatures} doesn't match with current params (in_features: ${params.in_features})`,
@@ -51,8 +51,8 @@ const LinearParameterCalculator: ParameterCalculator<LinearParams> = (p) => ({
 });
 
 // Meta Config
-const LINEAR_META: BaseNodeConfig<typeof NODE_TYPES.LINEAR, LinearParams> = {
-  type: NODE_TYPES.LINEAR,
+const LINEAR_META: BaseNodeConfig<typeof NODE_TYPE.LINEAR, LinearParams> = {
+  type: NODE_TYPE.LINEAR,
   label: 'nn.Linear',
   parameters: {
     in_features: 64,
@@ -61,6 +61,8 @@ const LINEAR_META: BaseNodeConfig<typeof NODE_TYPES.LINEAR, LinearParams> = {
   },
   dimensionRules: LinearDimensionRules,
   parameterCalculator: LinearParameterCalculator,
+  componentName: 'LinearNode',
+  configFormPath: 'Linear/config_form_linear',
 };
 
 export default LINEAR_META;

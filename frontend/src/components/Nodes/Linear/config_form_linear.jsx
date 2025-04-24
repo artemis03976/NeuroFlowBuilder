@@ -1,56 +1,43 @@
 import { Form, InputNumber, Switch} from 'antd';
-import { useFlowStore } from '@/stores/useFlowStore';
+import withConfigForm from '@/components/Nodes/withConfigForm';
 
+const title = 'nn.Linear';
+const description = '线性层将输入数据与权重矩阵相乘，并可选择性地加上偏置项。';
 
-const LinearConfigForm = ({ config }) => {
-  const updateNodeConfig = useFlowStore(state => state.updateNodeConfig);
-  const [form] = Form.useForm();
-
-  const handleChange = (newValues) => {
-    updateNodeConfig({
-      ...config,
-      ...newValues
-    });
-  };
-
+const LinearFormContent = ({ form, config }) => {
   return (
-    <div className="config-form">
-      <h3> nn.Linear </h3>
-      <p> put description here </p>
-
-      <Form
-        form={form}
-        layout="vertical"
-        initialValues={config}
-        onValuesChange={handleChange}
-        autoComplete="off"
+    <>
+      <Form.Item
+        label="Input Features"
+        name="in_features"
       >
-        <Form.Item
-          label="Input Features"
-          name="in_features"
-        >
-          <InputNumber
-            id="input_features"
-            style={{ width: '100%' }}
-          />
-        </Form.Item>
+        <InputNumber
+          id="input_features"
+          style={{ width: '100%' }}
+        />
+      </Form.Item>
 
-        <Form.Item
-          label="Output Features"
-          name="out_features"
-        >
-          <InputNumber
-            id="output_features"
-            style={{ width: '100%' }}
-          />
-        </Form.Item>
+      <Form.Item
+        label="Output Features"
+        name="out_features"
+      >
+        <InputNumber
+          id="output_features"
+          style={{ width: '100%' }}
+        />
+      </Form.Item>
 
-        <Form.Item label="Bias" name="bias">
-          <Switch />
-        </Form.Item>
-      </Form>
-    </div>
+      <Form.Item label="Bias" name="bias">
+        <Switch />
+      </Form.Item>
+    </>
   );
 };
+
+const LinearConfigForm = withConfigForm(
+  title, 
+  description, 
+  LinearFormContent
+);
 
 export default LinearConfigForm;

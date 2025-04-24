@@ -1,15 +1,7 @@
-import { Handle, Position } from '@xyflow/react';
+import withNode from '../withNode';
 
-import "../nodes.css"
-
-export const ReluNode = ({ data, selected }) => {
-  return (
-    <div className={`node ${selected ? 'selected' : ''}`}>
-      {/*<img src={Icon} alt="linear" className="w-6 h-6" />*/}
-      <div className="node-title">{data.label}</div>
-     
-      <Handle type="target" position={Position.Top} />
-      <Handle type="source" position={Position.Bottom} id="a" />
-    </div>
-  );
-};
+// 使用高阶组件创建ReLU节点
+export const ReluNode = withNode({
+	n_inputs: 1,
+	n_outputs: 1
+});

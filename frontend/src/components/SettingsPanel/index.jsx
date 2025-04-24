@@ -1,5 +1,6 @@
 import { memo, useMemo, lazy, Suspense } from 'react';
 import { useFlowStore } from '@/stores/useFlowStore';
+import { NODE_META } from '@node-configs';
 
 import './SettingsPanel.css'
 
@@ -14,14 +15,12 @@ export const SettingsPanel = memo(() => {
   const FormComponent = useMemo(() => {
     if (!selectedNode) return null;
     const type = selectedNode.type;
-    const componentName = type
-      .split('_')
-      .map(word => word[0].toUpperCase() + word.slice(1))
-      .join('');
+    const nodeMeta = NODE_META[type];
+    if (!nodeMeta || !nodeMeta.configFormPath) return null;
 
     try {
       return lazy(
-        () => import(/* @vite-ignore */`../Nodes/${componentName}/config_form_${type}`)
+        () => import(/* @vite-ignore */`../Nodes/${nodeMeta.configFormPath}`)
       );
     } catch (error) {
       console.error(`Failed to load module ${type}:`, error);
