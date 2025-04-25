@@ -1,0 +1,33 @@
+.node-panel {
+  padding: 12px;
+  height: 100%;
+  overflow-y: auto;
+  background-color: #f5f5f5;
+  border-right: 1px solid #e8e8e8;
+  width: 250px;
+}
+
+.node-panel h3 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.node-panel-search {
+  margin-bottom: 16px;
+}
+
+.node-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.node-category-collapse .ant-collapse-header {
+  font-weight: 500;
+}
+
+.node-category-collapse .ant-collapse-content-box {
+  padding: 8px !important;
+}

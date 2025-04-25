@@ -1,5 +1,5 @@
 import { NodeItem } from './NodeItem';
-import { NODE_TYPE } from '@/configs/node';
+import { NODE_TYPE } from '@node-configs';
 
 import './NodePanel.css';
 

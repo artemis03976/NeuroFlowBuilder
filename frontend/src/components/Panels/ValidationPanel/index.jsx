@@ -1,23 +1,23 @@
 import { useErrorStore } from "@/stores/useErrorStore";
-import { ERROR_TYPES, ERROR_LEVELS, ERROR_META } from "@/configs/ErrorConfig";
+import { ERROR_TYPE, ERROR_LEVEL, ERROR_META } from "@error-configs";
 
 import "./ValidationPanel.css";
 
 
 const ErrorConfig = {
-  [ERROR_TYPES.DIMENSION]: {
-    ...ERROR_META[ERROR_TYPES.DIMENSION],
+  [ERROR_TYPE.DIMENSION]: {
+    ...ERROR_META[ERROR_TYPE.DIMENSION],
     format: (error) => `节点 ${error.id.split(':')[1]}: ${error.message}`
   },
-  [ERROR_TYPES.CONNECTION]: {
-    ...ERROR_META[ERROR_TYPES.CONNECTION],
+  [ERROR_TYPE.CONNECTION]: {
+    ...ERROR_META[ERROR_TYPE.CONNECTION],
     format: (error) => `连接 ${error.id.split(':')[1]}: ${error.message}`
   },
 };
 
 const ValidationPanel = () => {
   const { getErrorsByLevel } = useErrorStore();
-  const errors = getErrorsByLevel(ERROR_LEVELS.INFO);
+  const errors = getErrorsByLevel(ERROR_LEVEL.INFO);
 
   return (
     <div className="compile-panel">

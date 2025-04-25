@@ -1,10 +1,10 @@
 import { useCallback, memo } from "react";
-import { useModelInfo } from "@/hooks/useModelInfo";
+import { useModelAnalyzer } from "@/hooks/useModelAnalyzer";
 
 import './InfoPanel.css';
 
 export const InfoPanel = memo(() => {
-  const { totalParams, totalFlops } = useModelInfo();
+  const { totalParams, totalFlops } = useModelAnalyzer();
 
   const formatNumber =  useCallback((num) => {
     if (typeof num !== 'number') return '-';

@@ -5,7 +5,7 @@ import { NODE_META } from "@/configs/node"
 import { useFlowStore } from "@/stores/useFlowStore";
 import { useNodeDnD } from "@/hooks/useNodeDnD";
 import { useEditorInteractions } from "@/hooks/useEditorInteractions";
-import { useDimensionCalculation } from "@/hooks/useDimensionCalculation";
+import { useModelAnalyzer } from "@/hooks/useModelAnalyzer";
 
 import { InfoPanel } from "@/components/InfoPanel";
 import * as NodeComponents from "../Nodes";
@@ -35,7 +35,7 @@ export const NodeEditor = () => {
   // Custom hooks
   const { onDrop, onDragOver } = useNodeDnD();
   const { handlePaneClick, handleElementClick } = useEditorInteractions();
-  useDimensionCalculation();
+  useModelAnalyzer();
 
   const onConnect = useCallback((connection) => {
     addEdge(connection)
