@@ -21,6 +21,30 @@ const SGD_META: BaseOptimizerConfig<typeof OPTIMIZER_TYPE.SGD> = {
       min: 0,
       max: 1,
       step: 0.01
+    },
+    {
+      name: 'dampening',
+      label: 'Dampening',
+      type: 'number',
+      defaultValue: 0,
+      min: 0,
+      max: 1,
+      step: 0.01
+    },
+    {
+      name: 'weight_decay',
+      label: 'Weight Decay',
+      type: 'number',
+      defaultValue: 0,
+      min: 0,
+      max: 1,
+      step: 0.001
+    },
+    {
+      name: 'nesterov',
+      label: 'Nesterov',
+      type: 'boolean',
+      defaultValue: false
     }
   ]
 };

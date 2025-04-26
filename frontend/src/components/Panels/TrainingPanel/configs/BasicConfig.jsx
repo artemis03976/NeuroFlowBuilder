@@ -1,5 +1,6 @@
 import React from "react";
-import { Divider, Form, InputNumber, Select, Switch } from "antd";
+import { Divider, Form, Input, InputNumber, Select, Switch } from "antd";
+import InputNumberArray from "@/components/common/InputNumberArray";
 import { OPTIMIZER_TYPE, OPTIMIZER_META } from "@optimizer-configs";
 
 
@@ -51,6 +52,13 @@ export const BasicConfig = ({ form }) => {
               >
                 {param.type === 'number' ? (
                   <InputNumber min={param.min} max={param.max} step={param.step}/>
+                ) : param.type === 'number_array' ? (
+                  <InputNumberArray 
+                    min={param.min} 
+                    max={param.max} 
+                    step={param.step}
+                    placeholder={`请输入数值，用逗号分隔`}
+                  />
                 ) : (
                   <Switch />
                 )}

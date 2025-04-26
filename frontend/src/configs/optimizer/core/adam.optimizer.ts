@@ -14,6 +14,24 @@ const ADAM_META: BaseOptimizerConfig<typeof OPTIMIZER_TYPE.ADAM> = {
       step: 0.0001
     },
     {
+      name: 'betas',
+      label: 'Betas',
+      type: 'number_array',
+      defaultValue: [0.9, 0.999],
+      min: [0, 0],
+      max: [1, 1],
+      step: [0.01, 0.001]
+    },
+    {
+      name: 'eps',
+      label: 'Epsilon',
+      type: 'number',
+      defaultValue: 1e-8,
+      min: 1e-10,
+      max: 1e-5,
+      step: 1e-9
+    },
+    {
       name: 'weight_decay',
       label: 'Weight Decay',
       type: 'number',
@@ -21,6 +39,12 @@ const ADAM_META: BaseOptimizerConfig<typeof OPTIMIZER_TYPE.ADAM> = {
       min: 0,
       max: 1,
       step: 0.001
+    },
+    {
+      name: 'amsgrad',
+      label: 'AMSGrad',
+      type: 'boolean',
+      defaultValue: false
     }
   ]
 };
