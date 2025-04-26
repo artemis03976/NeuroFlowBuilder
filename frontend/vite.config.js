@@ -9,7 +9,8 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, './src'),
       '@node-configs': path.resolve(__dirname, './src/configs/node'),
-      '@error-configs': path.resolve(__dirname, './src/configs/error')
+      '@error-configs': path.resolve(__dirname, './src/configs/error'),
+      '@optimizer-configs': path.resolve(__dirname, './src/configs/optimizer'),
     }
   },
   optimizeDeps: {

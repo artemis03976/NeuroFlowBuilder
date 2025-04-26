@@ -12,6 +12,7 @@
       "@/*": ["./src/*"],
       "@node-configs": ["./src/configs/node"],
       "@error-configs": ["./src/configs/error"],
+      "@optimizer-configs": ["./src/configs/optimizer"],
     },
     "types": [
       "vite/client"

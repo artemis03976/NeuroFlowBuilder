@@ -1,6 +1,6 @@
 import React from "react";
 import { Divider, Form, InputNumber, Select, Switch } from "antd";
-import { OPTIMIZER_TYPE, OPTIMIZER_META } from "@/configs/OptimizerConfig";
+import { OPTIMIZER_TYPE, OPTIMIZER_META } from "@optimizer-configs";
 
 
 export const basicInitValues = {
